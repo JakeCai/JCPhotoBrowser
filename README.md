@@ -5,7 +5,7 @@ An awesome way to browse your photos.
 
 This project has been used for [my graduation project](https://github.com/jakecai).
 
-![JCPhotoBrowser ScreenShot](http:)
+![JCPhotoBrowser ScreenShot](http://g.recordit.co/iWOLdXX68v.gif)
 
 ## Feature
 * Baso on [SDWebImage](https://github.com/rs/SDWebImage)

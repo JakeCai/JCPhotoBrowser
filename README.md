@@ -3,9 +3,9 @@
 ## Overview
 An awesome way to browse your photos.
 
-This project has been used for [my graduation project](https://github.com/jakecai).
+This project has been used for [my graduation project](https://github.com/JakeCai/MyGraduationProject).
 
-<img src="http://g.recordit.co/iWOLdXX68v.gif" width="340" height="600" alt="JCPhotoBrowser ScreenShot"/>
+<img src="http://g.recordit.co/fQ5VPpQ0rV.gif" width="340" height="600" alt="JCPhotoBrowser ScreenShot"/>
 
 ## Feature
 * Baso on [SDWebImage](https://github.com/rs/SDWebImage)
@@ -28,3 +28,10 @@ You need to intall [SDWebImage](https://github.com/rs/SDWebImage) first, then co
     JCPhotoBrowser *browser = [JCPhotoBrowser browserWithPhotoItems:items
                                                       selectedIndex:index];
     [browser showFromViewController:self];
+    
+    
+If you want to use other display style.
+
+	browser.dismissalStyle = JCPhotoBrowserInteractiveDismissalStyleScale;
+	browser.loadingStyle = JCPhotoBrowserImageLoadingStyleIndeterminate;
+	browser.pageindicatorStyle = JCPhotoBrowserPageIndicatorStyleText;

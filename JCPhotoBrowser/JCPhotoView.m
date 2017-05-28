@@ -77,7 +77,7 @@ const CGFloat kJCPhotoViewMaxScale = 3;
         _imageView.image = item.thumbImage;
         [_imageView sd_setImageWithURL:item.imageUrl
                       placeholderImage:item.thumbImage
-                               options:kNilOptions
+                               options:SDWebImageRetryFailed
                               progress:progressBlock
                              completed:^(UIImage * _Nullable image,
                                          NSError * _Nullable error,

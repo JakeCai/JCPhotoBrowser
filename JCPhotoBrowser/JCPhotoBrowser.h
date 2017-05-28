@@ -28,7 +28,6 @@ typedef NS_ENUM(NSUInteger, JCPhotoBrowserImageLoadingStyle) {
 @interface JCPhotoBrowser : UIViewController
 
 @property (nonatomic, assign) JCPhotoBrowserInteractiveDismissalStyle dismissalStyle;
-//@property (nonatomic, assign) JCPhotoBrowserBackgroundStyle backgroundStyle;
 @property (nonatomic, assign) JCPhotoBrowserPageIndicatorStyle pageindicatorStyle;
 @property (nonatomic, assign) JCPhotoBrowserImageLoadingStyle loadingStyle;
 

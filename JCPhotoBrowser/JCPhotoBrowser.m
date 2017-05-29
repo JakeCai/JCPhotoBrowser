@@ -8,7 +8,6 @@
 
 #import "JCPhotoView.h"
 #import "UIImageView+WebCache.h"
-//#import "UIImage+YYWebImage.h"
 #import "JCPhotoBrowser.h"
 
 static const NSTimeInterval kAnimationDuration = 0.3;

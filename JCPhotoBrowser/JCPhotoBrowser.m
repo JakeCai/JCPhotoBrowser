@@ -427,51 +427,6 @@ static const NSTimeInterval kAnimationDuration = 0.3;
     }];
 }
 
-- (void)showRotationCompletionAnimationFromPoint:(CGPoint)point {
-    JCPhotoView *photoView = [self photoViewForPage:_currentPage];
-    BOOL startFromLeft = _startLocation.x < self.view.frame.size.width / 2;
-    BOOL throwToTop = point.y < 0;
-    CGFloat angle, toTranslationY;
-    if (throwToTop) {
-        angle = startFromLeft ? (M_PI / 2) : -(M_PI / 2);
-        toTranslationY = -self.view.frame.size.height;
-    } else {
-        angle = startFromLeft ? -(M_PI / 2) : (M_PI / 2);
-        toTranslationY = self.view.frame.size.height;
-    }
-    
-    CGFloat angle0 = 0;
-    if (_startLocation.x < self.view.frame.size.width/2) {
-        angle0 = -(M_PI / 2) * (point.y / self.view.frame.size.height);
-    } else {
-        angle0 = (M_PI / 2) * (point.y / self.view.frame.size.height);
-    }
-    
-    CABasicAnimation *rotationAnimation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
-    rotationAnimation.fromValue = @(angle0);
-    rotationAnimation.toValue = @(angle);
-    CABasicAnimation *translationAnimation = [CABasicAnimation animationWithKeyPath:@"transform.translation.y"];
-    translationAnimation.fromValue = @(point.y);
-    translationAnimation.toValue = @(toTranslationY);
-    CAAnimationGroup *throwAnimation = [CAAnimationGroup animation];
-    throwAnimation.duration = kAnimationDuration;
-    throwAnimation.delegate = self;
-    throwAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
-    throwAnimation.animations = @[rotationAnimation, translationAnimation];
-    [throwAnimation setValue:@"throwAnimation" forKey:@"id"];
-    [photoView.imageView.layer addAnimation:throwAnimation forKey:@"throwAnimation"];
-    
-    CGAffineTransform rotation = CGAffineTransformMakeRotation(angle);
-    CGAffineTransform translation = CGAffineTransformMakeTranslation(0, toTranslationY);
-    CGAffineTransform transform = CGAffineTransformConcat(rotation, translation);
-    photoView.imageView.transform = transform;
-    
-    [UIView animateWithDuration:kAnimationDuration animations:^{
-        self.view.backgroundColor = [UIColor clearColor];
-        _backgroundView.alpha = 0;
-    } completion:nil];
-}
-
 - (void)showDismissalAnimation {
     JCPhotoItem *item = [_photoItems objectAtIndex:_currentPage];
     JCPhotoView *photoView = [self photoViewForPage:_currentPage];

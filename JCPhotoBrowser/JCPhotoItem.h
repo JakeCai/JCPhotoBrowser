@@ -10,10 +10,10 @@
 
 @interface JCPhotoItem : NSObject
 
-@property (nonatomic, strong, readonly) UIView *sourceView;
-@property (nonatomic, strong, readonly) UIImage *thumbImage;
-@property (nonatomic, strong, readonly) UIImage *image;
-@property (nonatomic, strong, readonly) NSURL *imageUrl;
+@property (nonatomic, strong) UIView *sourceView;
+@property (nonatomic, strong) UIImage *thumbImage;
+@property (nonatomic, strong) UIImage *image;
+@property (nonatomic, strong) NSURL *imageUrl;
 @property (nonatomic, assign) BOOL finished;
 
 - (instancetype)initWithSourceView:(UIView *)view

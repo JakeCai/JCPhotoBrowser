@@ -7,11 +7,11 @@
 //
 
 #import "JCPhotoView.h"
-#import "UIImageView+WebCache.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 #import "JCPhotoBrowser.h"
 
 static const NSTimeInterval kAnimationDuration = 0.3;
-@interface JCPhotoBrowser () <UIScrollViewDelegate, UIViewControllerTransitioningDelegate, CAAnimationDelegate> {
+@interface JCPhotoBrowser () <UIScrollViewDelegate> {
     CGPoint _startLocation;
 }
 
@@ -24,8 +24,6 @@ static const NSTimeInterval kAnimationDuration = 0.3;
 @property (nonatomic, strong) NSMutableArray *visibleItemViews;
 
 @property (nonatomic, assign) NSUInteger currentPage;
-
-@property (nonatomic, strong) UIImageView *backgroundView;
 
 @property (nonatomic, strong) UIPageControl *pageControl;
 
@@ -56,7 +54,7 @@ static const NSTimeInterval kAnimationDuration = 0.3;
         
         self.dismissalStyle = JCPhotoBrowserInteractiveDismissalStyleSlide;
         self.pageindicatorStyle = JCPhotoBrowserPageIndicatorStyleDot;
-        self.loadingStyle = 0;
+        self.loadingStyle = JCPhotoBrowserImageLoadingStyleDeterminate;
         
         self.modalPresentationStyle = UIModalPresentationCustom;
         self.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
@@ -74,19 +72,14 @@ static const NSTimeInterval kAnimationDuration = 0.3;
     
     self.view.backgroundColor = [UIColor clearColor];
     
-    _backgroundView = [[UIImageView alloc] initWithFrame:self.view.bounds];
-    _backgroundView.contentMode = UIViewContentModeScaleAspectFill;
-    _backgroundView.alpha = 0;
-    [self.view addSubview:_backgroundView];
-    
     CGRect rect = self.view.bounds;
     rect.origin.x -= kJCPhotoViewPadding;
     rect.size.width += 2 * kJCPhotoViewPadding;
-    _scrollView = [[UIScrollView alloc] initWithFrame:rect];
-    _scrollView.pagingEnabled = YES;
-    _scrollView.showsHorizontalScrollIndicator = NO;
-    _scrollView.delegate = self;
-    [self.view addSubview:_scrollView];
+    self.scrollView = [[UIScrollView alloc] initWithFrame:rect];
+    self.scrollView.pagingEnabled = YES;
+    self.scrollView.showsHorizontalScrollIndicator = NO;
+    self.scrollView.delegate = self;
+    [self.view addSubview:self.scrollView];
     
     if (_pageindicatorStyle == JCPhotoBrowserPageIndicatorStyleDot) {
         _pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height-40, self.view.bounds.size.width, 20)];
@@ -142,10 +135,9 @@ static const NSTimeInterval kAnimationDuration = 0.3;
     [UIView animateWithDuration:kAnimationDuration animations:^{
         photoView.imageView.frame = endRect;
         self.view.backgroundColor = [UIColor blackColor];
-        _backgroundView.alpha = 1;
     } completion:^(BOOL finished) {
         [self configPhotoView:photoView withItem:item];
-        _presented = YES;
+        self.presented = YES;
         [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
     }];
 }
@@ -221,10 +213,10 @@ static const NSTimeInterval kAnimationDuration = 0.3;
         }
     }
     
-    if (page != _currentPage && _presented) {
-        _currentPage = page;
+    if (page != self.currentPage && self.presented) {
+        self.currentPage = page;
         if (_pageindicatorStyle == JCPhotoBrowserPageIndicatorStyleDot) {
-            _pageControl.currentPage = page;
+            self.pageControl.currentPage = page;
         } else {
             [self configPageLabelWithPage:_currentPage];
         }
@@ -266,7 +258,6 @@ static const NSTimeInterval kAnimationDuration = 0.3;
             CGAffineTransform scale = CGAffineTransformMakeScale(s, s);
             photoView.imageView.transform = CGAffineTransformConcat(translation, scale);
             self.view.backgroundColor = [UIColor colorWithWhite:0 alpha:percent];
-            _backgroundView.alpha = percent;
         }
             break;
         case UIGestureRecognizerStateEnded:
@@ -298,7 +289,6 @@ static const NSTimeInterval kAnimationDuration = 0.3;
             photoView.imageView.transform = CGAffineTransformMakeTranslation(0, point.y);
             double percent = 1 - fabs(point.y)/(self.view.frame.size.height/2);
             self.view.backgroundColor = [UIColor colorWithWhite:0 alpha:percent];
-            _backgroundView.alpha = percent;
         }
             break;
         case UIGestureRecognizerStateEnded:
@@ -327,7 +317,7 @@ static const NSTimeInterval kAnimationDuration = 0.3;
 - (void)handlePanBegin {
     JCPhotoView *photoView = [self photoViewForPage:_currentPage];
     [photoView cancelCurrentImageLoad];
-    JCPhotoItem *item = [_photoItems objectAtIndex:_currentPage];
+    JCPhotoItem *item = [self.photoItems objectAtIndex:_currentPage];
     [UIApplication sharedApplication].statusBarHidden = NO;
     photoView.progressLayer.hidden = YES;
     item.sourceView.alpha = 0;
@@ -420,7 +410,6 @@ static const NSTimeInterval kAnimationDuration = 0.3;
     [UIView animateWithDuration:kAnimationDuration animations:^{
         photoView.imageView.transform = CGAffineTransformIdentity;
         self.view.backgroundColor = [UIColor blackColor];
-        _backgroundView.alpha = 1;
     } completion:^(BOOL finished) {
         [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
         [self configPhotoView:photoView withItem:item];
@@ -444,7 +433,6 @@ static const NSTimeInterval kAnimationDuration = 0.3;
     [UIView animateWithDuration:kAnimationDuration animations:^{
         photoView.imageView.frame = sourceRect;
         self.view.backgroundColor = [UIColor clearColor];
-        _backgroundView.alpha = 0;
     } completion:^(BOOL finished) {
         [self dismissAnimated:NO];
     }];
@@ -462,17 +450,9 @@ static const NSTimeInterval kAnimationDuration = 0.3;
     [UIView animateWithDuration:kAnimationDuration animations:^{
         photoView.imageView.transform = CGAffineTransformMakeTranslation(0, toTranslationY);
         self.view.backgroundColor = [UIColor clearColor];
-        _backgroundView.alpha = 0;
     } completion:^(BOOL finished) {
         [self dismissAnimated:YES];
     }];
-}
-
-#pragma mark - Animation Delegate
-- (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag {
-    if ([[anim valueForKey:@"id"] isEqualToString:@"throwAnimation"]) {
-        [self dismissAnimated:YES];
-    }
 }
 
 #pragma mark - ScrollView Delegate

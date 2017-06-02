@@ -8,7 +8,7 @@
 
 #import "JCPhotoView.h"
 #import "JCPhotoItem.h"
-#import "UIImageView+WebCache.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 #import "JCProgressLayer.h"
 
 const CGFloat kJCPhotoViewPadding = 10;
@@ -31,16 +31,16 @@ const CGFloat kJCPhotoViewMaxScale = 3;
         self.showsVerticalScrollIndicator = YES;
         self.delegate = self;
         
-        _imageView = [[UIImageView alloc] init];
-        _imageView.backgroundColor = [UIColor darkGrayColor];
-        _imageView.contentMode = UIViewContentModeScaleAspectFill;
-        _imageView.clipsToBounds = YES;
+        self.imageView = [[UIImageView alloc] init];
+        self.imageView.backgroundColor = [UIColor darkGrayColor];
+        self.imageView.contentMode = UIViewContentModeScaleAspectFill;
+        self.imageView.clipsToBounds = YES;
         [self addSubview:_imageView];
         [self resizeImageView];
         
-        _progressLayer = [[JCProgressLayer alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
-        _progressLayer.position = CGPointMake(frame.size.width/2, frame.size.height/2);
-        _progressLayer.hidden = YES;
+        self.progressLayer = [[JCProgressLayer alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
+        self.progressLayer.position = CGPointMake(frame.size.width/2, frame.size.height/2);
+        self.progressLayer.hidden = YES;
         [self.layer addSublayer:_progressLayer];
     }
     return self;

@@ -1,6 +1,4 @@
 # JCPhotoBrowser
-
-## Overview
 An awesome way to browse your photos.
 
 This project has been used for [my graduation project](https://github.com/JakeCai/MyGraduationProject).
@@ -8,12 +6,13 @@ This project has been used for [my graduation project](https://github.com/JakeCa
 ![JCPhotoBrowser ScreenShot](https://thumbs.gfycat.com/MajesticShockedFlamingo-size_restricted.gif)
 
 ## Feature
-* Baso on [SDWebImage](https://github.com/rs/SDWebImage)
+* Objective-C version base on [SDWebImage](https://github.com/rs/SDWebImage)
+* Swift version base on [Kingfisher](https://github.com/onevcat/Kingfisher)
 * Support common photo display style.
 
 ## GetStart
 ### Usage
-You need to intall [SDWebImage](https://github.com/rs/SDWebImage) first, then copy files to your project.
+You need to intall [SDWebImage](https://github.com/rs/SDWebImage) or [Kingfisher](https://github.com/onevcat/Kingfisher) first, then copy files to your project.
 
 	import "JCPhotoBrowser"
 	NSArray *urls = @[@"http://wx2.sinaimg.cn/large/8daf9352gy1ffygabrjzmj20zk1767df.jpg",

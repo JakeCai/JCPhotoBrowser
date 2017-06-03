@@ -45,7 +45,7 @@ class JCPhotoBrowser: UIViewController , UIScrollViewDelegate{
     fileprivate var pageControl:UIPageControl!
     fileprivate var pageLabel:UILabel!
     
-    init(_photoItems:Array<JCPhotoItem> , selectedIndex:UInt) {
+    init(_ _photoItems:Array<JCPhotoItem> ,selectedIndex:UInt) {
         super.init(nibName: nil, bundle: nil)
         
         self.modalPresentationStyle = UIModalPresentationStyle.custom

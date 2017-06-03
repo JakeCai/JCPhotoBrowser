@@ -17,21 +17,21 @@ class JCPhotoItem: NSObject {
     var finished:Bool! = false
     
 
-    public init(source:UIView?, thumb:UIImage?, url:URL?) {
+    @objc public init(_ source:UIView?,_ thumb:UIImage?,_ url:URL?) {
         super.init()
         self.sourceView = source
         self.thumbImage = thumb
         self.imageUrl = url
     }
     
-    public convenience init(source:UIImageView?, url:URL?) {
-        self.init(source: source, thumb: source?.image, url: url)
+    @objc public convenience init(_ source:UIImageView?,_ url:URL?) {
+        self.init(source,source?.image,url)
     }
     
-    public init(source:UIImageView?, _image:UIImage?) {
+    @objc public init(_ source:UIImageView?,_image:UIImage?) {
         super.init()
         self.sourceView = source
-        self.thumbImage =  image
+        self.thumbImage =  _image
         self.imageUrl = nil
         self.image = _image
     }

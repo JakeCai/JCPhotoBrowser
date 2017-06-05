@@ -177,10 +177,8 @@ class JCPhotoBrowser: UIViewController , UIScrollViewDelegate{
     
     @objc fileprivate func configItemViews() {
         let page = Int(scrollView.contentOffset.x / scrollView.frame.size.width + 0.5)
-        var i = page - 1
-        while i<=page+1 {
+        for i in 0...page {
             if i<0 || i>=photoItems.count {
-                i += 1
                 continue
             }
             var photoView = self.photoViewFor(UInt(i))
@@ -197,7 +195,6 @@ class JCPhotoBrowser: UIViewController , UIScrollViewDelegate{
                 let item = photoItems[i]
                 self.config(photoView!, item: item)
             }
-            i += 1
         }
         
         if page != Int(currentPage) && present {

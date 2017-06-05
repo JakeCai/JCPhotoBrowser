@@ -177,7 +177,7 @@ class JCPhotoBrowser: UIViewController , UIScrollViewDelegate{
     
     @objc fileprivate func configItemViews() {
         let page = Int(scrollView.contentOffset.x / scrollView.frame.size.width + 0.5)
-        for i in 0...page {
+        for i in (page-1)...(page+1) {
             if i<0 || i>=photoItems.count {
                 continue
             }

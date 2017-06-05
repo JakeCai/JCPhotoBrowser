@@ -12,9 +12,9 @@ import Kingfisher
 class JCPhotoView: UIScrollView , UIScrollViewDelegate{
     let kJCPhotoViewMaxScale = 3.0
     let kJCPhotoViewPadding = 10.0
-    var imageView:UIImageView!
-    var progressLayer:JCProgressLayer!
-    var item:JCPhotoItem!
+    fileprivate(set) var imageView:UIImageView!
+    fileprivate(set) var progressLayer:JCProgressLayer!
+    fileprivate(set) var item:JCPhotoItem!
     
     
     override init(frame: CGRect) {
@@ -55,7 +55,7 @@ class JCPhotoView: UIScrollView , UIScrollViewDelegate{
                 self.resizeImageView()
                 return
             }
-            var progressBlock:DownloadProgressBlock! = nil
+            var progressBlock:DownloadProgressBlock? = nil
             if determinate {
                 progressBlock = { [weak self](_ receivedSize: Int64, _ totalSize: Int64)-> Void in
                     let weakSelf = self
@@ -63,7 +63,11 @@ class JCPhotoView: UIScrollView , UIScrollViewDelegate{
                     weakSelf?.progressLayer.isHidden = false
                     weakSelf?.progressLayer.progress = max(progress, 0.01)
                 }
+            }else{
+                progressLayer.startPin()
             }
+            progressLayer.isHidden = false
+            
             imageView.image = item.thumbImage
             imageView.kf.setImage(with: item.imageUrl, placeholder: item.thumbImage,
                                   options: [KingfisherOptionsInfoItem.backgroundDecode],

@@ -10,10 +10,10 @@ import UIKit
 
 
 class JCPhotoItem: NSObject {
-    var sourceView:UIView!
-    var thumbImage:UIImage!
-    var image:UIImage!
-    var imageUrl:URL!
+    fileprivate(set) var sourceView:UIView!
+    fileprivate(set) var thumbImage:UIImage!
+    fileprivate(set) var image:UIImage!
+    fileprivate(set) var imageUrl:URL!
     var finished:Bool! = false
     
 

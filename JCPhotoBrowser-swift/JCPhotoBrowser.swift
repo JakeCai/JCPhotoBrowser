@@ -35,11 +35,11 @@ class JCPhotoBrowser: UIViewController , UIScrollViewDelegate{
     fileprivate var scrollView:UIScrollView!
     
     fileprivate var present:Bool! = false
-    fileprivate var startLocation:CGPoint!
+    fileprivate var startLocation:CGPoint?
     
-    fileprivate var photoItems:Array<JCPhotoItem>!
-    fileprivate var reuseableItemViews:Set<JCPhotoView>!
-    fileprivate var visibleItemViews:Array<JCPhotoView>!
+    fileprivate var photoItems = Array<JCPhotoItem>()
+    fileprivate var reuseableItemViews = Set<JCPhotoView>()
+    fileprivate var visibleItemViews = Array<JCPhotoView>()
     fileprivate var currentPage:UInt!
     
     fileprivate var pageControl:UIPageControl!
@@ -52,10 +52,6 @@ class JCPhotoBrowser: UIViewController , UIScrollViewDelegate{
         self.modalTransitionStyle = UIModalTransitionStyle.coverVertical
         
         currentPage = selectedIndex
-        
-        reuseableItemViews = Set.init()
-        visibleItemViews = Array.init()
-        photoItems = Array.init()
         photoItems = _photoItems
     }
     
@@ -80,7 +76,7 @@ class JCPhotoBrowser: UIViewController , UIScrollViewDelegate{
             pageControl = UIPageControl.init(frame: CGRect.init(x: 0, y: self.view.bounds.size.height-40, width: self.view.bounds.size.width, height: 20))
             pageControl.numberOfPages = photoItems.count
             pageControl.currentPage = Int(currentPage)
-            self.view.addSubview(pageControl)
+            self.view.addSubview(pageControl!)
         }else{
             pageLabel = UILabel.init(frame: CGRect.init(x: 0, y: self.view.bounds.size.height-40, width: self.view.bounds.size.width, height: 20))
             pageLabel.textColor = UIColor.white
@@ -105,13 +101,13 @@ class JCPhotoBrowser: UIViewController , UIScrollViewDelegate{
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        let item = photoItems?[Int(currentPage)]
+        let item = photoItems[Int(currentPage)]
         let photoView = self.photoViewFor(currentPage)
         
-        if KingfisherManager.shared.cache.retrieveImageInMemoryCache(forKey: (item?.imageUrl.absoluteString)!) != nil {
+        if KingfisherManager.shared.cache.retrieveImageInMemoryCache(forKey: (item.imageUrl.absoluteString)) != nil {
             self.config(photoView!, item: item)
         }else{
-            photoView?.imageView.image = item?.thumbImage
+            photoView?.imageView.image = item.thumbImage
             photoView?.resizeImageView()
         }
         
@@ -119,9 +115,9 @@ class JCPhotoBrowser: UIViewController , UIScrollViewDelegate{
         var sourceRect:CGRect!
         let systemVersion = (UIDevice.current.systemVersion as NSString).floatValue
         if systemVersion >= 8.0 && systemVersion < 9.0 {
-            sourceRect = item?.sourceView.superview?.convert((item?.sourceView.frame)!, to: photoView)
+            sourceRect = item.sourceView.superview?.convert((item.sourceView.frame), to: photoView)
         }else{
-            sourceRect = item?.sourceView.superview?.convert((item?.sourceView.frame)!, to: photoView)
+            sourceRect = item.sourceView.superview?.convert((item.sourceView.frame), to: photoView)
         }
         photoView?.imageView.frame = sourceRect
         

@@ -10,8 +10,8 @@ import UIKit
 import Kingfisher
 
 class JCPhotoView: UIScrollView , UIScrollViewDelegate{
-    let kJCPhotoViewMaxScale = 3.0
-    let kJCPhotoViewPadding = 10.0
+    fileprivate let kJCPhotoViewMaxScale = 3.0
+    fileprivate let kJCPhotoViewPadding = 10.0
     fileprivate(set) var imageView:UIImageView!
     fileprivate(set) var progressLayer:JCProgressLayer!
     fileprivate(set) var item:JCPhotoItem!

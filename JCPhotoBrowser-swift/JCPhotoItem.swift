@@ -12,9 +12,9 @@ import UIKit
 class JCPhotoItem: NSObject {
     fileprivate(set) var sourceView:UIView!
     fileprivate(set) var thumbImage:UIImage!
-    fileprivate(set) var image:UIImage!
-    fileprivate(set) var imageUrl:URL!
-    var finished:Bool! = false
+    fileprivate(set) var image:UIImage?
+    fileprivate(set) var imageUrl:URL?
+    var finished = false
     
 
     @objc public init(_ source:UIView?,_ thumb:UIImage?,_ url:URL?) {

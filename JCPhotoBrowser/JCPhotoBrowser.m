@@ -369,10 +369,13 @@ static const NSTimeInterval kAnimationDuration = 0.3;
     }
     
     JCPhotoView *photoView = [self photoViewForPage:_currentPage];
-    NSString *path = [[SDImageCache sharedImageCache] defaultCachePathForKey:[[SDWebImageManager sharedManager] cacheKeyForURL:photoView.item.imageUrl]];
-    NSData *imageData = [NSData dataWithContentsOfFile:path];
-    
-    if (imageData.length <= 0) {
+    NSData *imageData = nil;
+    if (photoView.item.imageUrl) {
+        NSString *path = [[SDImageCache sharedImageCache] defaultCachePathForKey:[[SDWebImageManager sharedManager] cacheKeyForURL:photoView.item.imageUrl]];
+        imageData = [NSData dataWithContentsOfFile:path];
+    }else if(photoView.item.image){
+        imageData = UIImagePNGRepresentation(photoView.item.image);
+    }else{
         return;
     }
     UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[imageData] applicationActivities:nil];

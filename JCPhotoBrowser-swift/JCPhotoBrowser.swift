@@ -34,7 +34,7 @@ class JCPhotoBrowser: UIViewController , UIScrollViewDelegate{
     
     fileprivate var scrollView:UIScrollView!
     
-    fileprivate var present:Bool! = false
+    fileprivate var present = false
     fileprivate var startLocation:CGPoint?
     
     fileprivate var photoItems = Array<JCPhotoItem>()
@@ -76,7 +76,7 @@ class JCPhotoBrowser: UIViewController , UIScrollViewDelegate{
             pageControl = UIPageControl.init(frame: CGRect.init(x: 0, y: self.view.bounds.size.height-40, width: self.view.bounds.size.width, height: 20))
             pageControl.numberOfPages = photoItems.count
             pageControl.currentPage = Int(currentPage)
-            self.view.addSubview(pageControl!)
+            self.view.addSubview(pageControl)
         }else{
             pageLabel = UILabel.init(frame: CGRect.init(x: 0, y: self.view.bounds.size.height-40, width: self.view.bounds.size.width, height: 20))
             pageLabel.textColor = UIColor.white
@@ -104,7 +104,7 @@ class JCPhotoBrowser: UIViewController , UIScrollViewDelegate{
         let item = photoItems[Int(currentPage)]
         let photoView = self.photoViewFor(currentPage)
         
-        if KingfisherManager.shared.cache.retrieveImageInMemoryCache(forKey: (item.imageUrl.absoluteString)) != nil {
+        if KingfisherManager.shared.cache.retrieveImageInMemoryCache(forKey: (item.imageUrl?.absoluteString)!) != nil {
             self.config(photoView!, item: item)
         }else{
             photoView?.imageView.image = item.thumbImage
@@ -344,8 +344,15 @@ class JCPhotoBrowser: UIViewController , UIScrollViewDelegate{
             return
         }
         let photoView = self.photoViewFor(currentPage)
-        let path = KingfisherManager.shared.cache.cachePath(forKey: (photoView?.item.imageUrl.absoluteString)!)
-        let imageData = NSData.init(contentsOfFile: path)
+        var imageData:NSData?
+        if photoView?.item.imageUrl != nil{
+            let path = KingfisherManager.shared.cache.cachePath(forKey: (photoView?.item.imageUrl?.absoluteString)!)
+            imageData = NSData.init(contentsOfFile: path)
+        }else if photoView?.item.image != nil{
+            imageData = (UIImagePNGRepresentation((photoView?.item.image)!)) as NSData?
+        }else{
+            return
+        }
         let vc  = UIActivityViewController.init(activityItems: [imageData!], applicationActivities: nil)
         self.present(vc, animated: true, completion: nil)
     }

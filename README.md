@@ -1,9 +1,7 @@
 # JCPhotoBrowser
 An awesome way to browse your photos.
 
-This project has been used for [my graduation project](https://github.com/JakeCai/MyGraduationProject).
-
-![JCPhotoBrowser ScreenShot](https://thumbs.gfycat.com/MajesticShockedFlamingo-size_restricted.gif)
+![JCPhotoBrowser ScreenShot](/demo.gif)
 
 ## Feature
 * Objective-C version base on [SDWebImage](https://github.com/rs/SDWebImage)
